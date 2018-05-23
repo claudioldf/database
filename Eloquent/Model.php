@@ -920,7 +920,7 @@ abstract class Model implements ArrayAccess, Arrayable, Jsonable, JsonSerializab
      * @param  string|null  $localKey
      * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
      */
-    public function hasManyThrough($related, $through, $firstKey = null, $secondKey = null, $localKey = null)
+    public function hasManyThrough($related, $through, $firstKey = null, $secondKey = null, $localKey = null, $secondLocalKey = null)
     {
         $through = new $through;
 
@@ -930,7 +930,9 @@ abstract class Model implements ArrayAccess, Arrayable, Jsonable, JsonSerializab
 
         $localKey = $localKey ?: $this->getKeyName();
 
-        return new HasManyThrough((new $related)->newQuery(), $this, $through, $firstKey, $secondKey, $localKey);
+	$secondLocalKey = $secondLocalKey ?: $through->getKeyName();
+
+        return new HasManyThrough((new $related)->newQuery(), $this, $through, $firstKey, $secondKey, $localKey, $secondLocalKey);
     }
 
     /**

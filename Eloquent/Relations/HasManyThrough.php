@@ -39,6 +39,13 @@ class HasManyThrough extends Relation
     protected $localKey;
 
     /**
+     * The local key on the intermediary model.
+     *
+     * @var string
+     */
+    protected $secondLocalKey;
+
+    /**
      * Create a new has many through relationship instance.
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
@@ -49,12 +56,13 @@ class HasManyThrough extends Relation
      * @param  string  $localKey
      * @return void
      */
-    public function __construct(Builder $query, Model $farParent, Model $parent, $firstKey, $secondKey, $localKey)
+    public function __construct(Builder $query, Model $farParent, Model $parent, $firstKey, $secondKey, $localKey, $secondLocalKey)
     {
         $this->localKey = $localKey;
         $this->firstKey = $firstKey;
         $this->secondKey = $secondKey;
         $this->farParent = $farParent;
+	    $this->secondLocalKey = $secondLocalKey;
 
         parent::__construct($query, $parent);
     }
@@ -114,6 +122,16 @@ class HasManyThrough extends Relation
         if ($this->parentSoftDeletes()) {
             $query->whereNull($this->parent->getQualifiedDeletedAtColumn());
         }
+    }
+
+    /**
+     * Get the fully qualified parent key name.
+     *
+     * @return string
+     */
+    public function getQualifiedParentKeyName()
+    {
+        return $this->parent->getTable().'.'.$this->secondLocalKey;
     }
 
     /**
