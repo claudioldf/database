@@ -1,5 +1,5 @@
 {
-    "name": "claudioldf/database",
+    "name": "illuminate/database",
     "description": "The Illuminate Database package.",
     "license": "MIT",
     "homepage": "http://laravel.com",
